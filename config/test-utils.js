@@ -85,6 +85,19 @@ beforeEach(function() {
           (typeof this.actual) + (this.isNot ? ' not ' : '') + " to have type '" + type + "'.";
       };
       return typeof this.actual == type;
+    },
+
+    toHaveFields: function(fields) {
+      this.message = function() {
+        return "Expected " + angular.mock.dump(this.actual) + (this.isNot ? ' not ' : ' ') +
+          "to have fields matching " + angular.mock.dump(fields);
+      };
+      for (var key in fields) {
+        if (!(this.actual || {}).hasOwnProperty(key) || this.actual[key] !== fields[key]) {
+          return false;
+        }
+      }
+      return true;
     }
   });
 
